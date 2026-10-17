@@ -33,6 +33,11 @@ jobs:
         run: |
           unzip -o NabaConnectDailyTracker-Android-Phone-Build.zip -d .
 
+      - name: Align Java target
+        run: |
+          sed -i 's/VERSION_1_8/VERSION_17/g' NabaConnectDailyTracker-Android/app/build.gradle
+
+
       - name: Build APK
         run: gradle --no-daemon -p NabaConnectDailyTracker-Android assembleDebug
 
