@@ -40,7 +40,8 @@ jobs:
           from pathlib import Path
 
           p = Path("NabaConnectDailyTracker-Android/app/build.gradle")
-          s = p.read_text()
+          s = p.read_text()          
+          s = s.replace("targetSdk 28", "targetSdk 35")
 
           block = """
               compileOptions {
