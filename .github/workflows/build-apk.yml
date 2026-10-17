@@ -33,9 +33,34 @@ jobs:
         run: |
           unzip -o NabaConnectDailyTracker-Android-Phone-Build.zip -d .
 
-      - name: Align Java target
+      
+      - name: Align Java and Kotlin JVM targets
         run: |
-          sed -i 's/VERSION_1_8/VERSION_17/g' NabaConnectDailyTracker-Android/app/build.gradle
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path("NabaConnectDailyTracker-Android/app/build.gradle")
+          s = p.read_text()
+
+          block = """
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
+          """
+
+          if "jvmTarget = '17'" not in s:
+              s = s.replace("android {", "android {" + block, 1)
+              p.write_text(s)
+
+          print(p.read_text())
+          PY
+
+    
+         
 
 
       - name: Build APK
